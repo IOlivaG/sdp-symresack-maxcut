@@ -1,26 +1,32 @@
-# SDP-Symresack: Symmetry Handling in Semidefinite Programming
+# SDP-Symresack: Lexicographic Symmetry Breaking for Semidefinite Programs
 
-This repository explores whether the idea behind **symresacks** (Hojny, 2020), lexicographic ordering of symmetric variables, can be adapted from binary integer programming to semidefinite programming. Using the maximum cut SDP relaxation on the complete graph $K_3$ as a minimal working example, the notebook walks through three approaches to symmetry handling: no handling, Gatermann-Parrilo group averaging, and lexicographic ordering via FD-inequalities. All analysis is carried out analytically, without external solvers, so that every step can be verified by hand.
+This repository presents **SDP-symresacks**: linear constraints that impose a lexicographic ordering on the entries of a symmetric positive semidefinite matrix to select a canonical representative from each symmetry orbit. These constraints, called **FD-inequalities** (first-different inequalities), provably preserve the optimal value of any SDP whose feasible set and objective are invariant under a permutation group acting by conjugation. The proof is elementary: every orbit is finite, so it contains a lexicographically maximal element, which by construction satisfies the FD-inequalities and achieves the same objective value as any other orbit member.
+
+Using the maximum cut SDP relaxation on the complete graph $K_3$ as a minimal working example, the notebook walks through three approaches to symmetry handling: no handling, Gatermann-Parrilo group averaging (GP1), and lexicographic ordering via FD-inequalities. At the pure SDP level, all three approaches give the same bound ($9/4$); the difference between GP1 and FD-inequalities appears only when integer feasibility is required. All analysis is carried out analytically, without external solvers.
 
 ## Repository Structure
+
 ```
-sdp-symresack-maxcut/
+sdp-symresack/
 ├── README.md
-└── sdp_symresack_maxcut_K3.ipynb
+└── sdp_symresack_maxcut.ipynb
 ```
 
 ## Notebook Overview
 
-**`sdp_symresack_maxcut_K3.ipynb`** is organized into the following sections:
+**`sdp_symresack_maxcut.ipynb`** covers:
 
-- **MaxCut SDP Relaxation on $K_3$:** presents the Goemans-Williamson semidefinite relaxation, writes the $3 \times 3$ PSD matrix with variables $a, b, c$, derives PSD conditions via principal minors, characterizes $S_3$ symmetry by conjugation, and identifies the optimal MaxCut solution.
-- **GP1 Averaging:** applies the Gatermann-Parrilo fixed-point restriction, forcing $a = b = c$, and shows analytically that it loses optimality (dual bound 2.25 > 2).
-- **FD-Inequalities (SDP-Symresack):** introduces lexicographic ordering constraints ($a \ge b$) that select a canonical representative per orbit, preserving optimality while breaking symmetry. Compares all three approaches and discusses limitations and future work directions.
+- **Semidefinite Programs and Symmetry Groups:** defines the SDP standard form, the conjugation action of a permutation group, and the symmetry group of an SDP.
+- **Vectorization, Lexicographic Order, and FD-Inequalities:** introduces the upper-triangle vectorization, the first-different (FD) position, and derives the FD-inequalities $X_{12} \geq X_{13} \geq X_{23}$ for $S_3$ on $K_3$.
+- **Main Theorem:** proves that FD-inequalities preserve the SDP optimum ($\max_\mathcal{F} = \max_{\mathcal{F}_G}$) with a short three-step argument.
+- **Comparison with GP Averaging:** explains why GP1 is safe for pure SDPs but fails for integer feasibility, with a comparison table of both methods.
+- **Illustration on $K_3$:** computes the SDP optimal value $9/4$, verifies that both FD-inequalities and GP1 recover it, and notes that all three approaches give the same bound at the pure SDP level.
+- **Extensions:** discusses FD-inequalities for general $S_n$, cyclic groups $\mathbb{Z}_k$, signed permutation groups $B_n$, and orbit-wise application.
 
 ## Contributing
 
-Contributions are welcome. Please open an issue or submit a pull request for suggestions, improvements, or bug fixes. You can also reach out via [Isaac Oliva-González's homepage](https://iolivag.github.io).
+Contributions are welcome. Please open an issue or submit a pull request for suggestions, improvements, or corrections. You can also reach out via [Isaac Oliva-González's homepage](https://iolivag.github.io).
 
 ## License
 
-This project is licensed under the MIT License.
+MIT License.
